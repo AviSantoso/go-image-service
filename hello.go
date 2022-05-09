@@ -13,8 +13,8 @@ func HelloServer(res http.ResponseWriter, req *http.Request) {
 }
 
 func main() {
-	var PORT = 8080
+	var PORT = 80
 	http.HandleFunc("/", HelloServer)
 	log.Println("Hello world server starting on", fmt.Sprintf("http://localhost:%d", PORT))
-	log.Fatal(http.ListenAndServe(":8080", nil))
+	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%d", PORT), nil))
 }
