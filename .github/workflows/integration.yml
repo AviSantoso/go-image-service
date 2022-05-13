@@ -1,14 +1,18 @@
-name: Go
+name: Integration
 
 on:
   push:
-    branches: [ main ]
+  workflow_call:
   pull_request:
-    branches: [ main ]
+    types:
+      - opened
+      - edited
+      - synchronize
+      - reopened
 
 jobs:
 
-  build:
+  integration:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
