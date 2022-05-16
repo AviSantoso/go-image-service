@@ -21,3 +21,10 @@ func (logger Logger) Info(message string) {
 		"id":   logger.Id,
 	}).Info(message)
 }
+
+func (logger Logger) Error(message string) {
+	log.WithFields(log.Fields{
+		"path": logger.Path,
+		"id":   logger.Id,
+	}).Error(message)
+}
