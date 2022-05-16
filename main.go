@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"net/http"
 
-	logger "github.com/AviSantoso/go-image-service/logger"
+	"github.com/AviSantoso/go-image-service/logger"
 	gin "github.com/gin-gonic/gin"
 	gonanoid "github.com/matoous/go-nanoid/v2"
 )
