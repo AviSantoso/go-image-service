@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
+	"strings"
 
 	"github.com/AviSantoso/go-image-service/logger"
 	gin "github.com/gin-gonic/gin"
@@ -37,11 +38,32 @@ func HandlerImageUpload(ctx *gin.Context) {
 		return
 	}
 
+	content_type := (file.Header.Get("Content-Type"))
+
+	if !strings.HasPrefix(content_type, "image/") {
+		message := fmt.Sprintf("The content type %s is not supported for this route.", content_type)
+		log.Error(message)
+		ctx.JSON(http.StatusBadRequest, gin.H{
+			"error": message,
+		})
+		return
+	}
+
 	log.Info(fmt.Sprintf("Received new upload request with filename %s and size %d", file.Filename, file.Size))
 	out_file := filepath.Join(".", "temp", id)
 
 	log.Info(fmt.Sprintf("Writing image to %s", out_file))
-	ctx.SaveUploadedFile(file, out_file)
+
+	err = ctx.SaveUploadedFile(file, out_file)
+
+	if err != nil {
+		log.Error(err.Error())
+		ctx.JSON(http.StatusInternalServerError, gin.H{
+			"error": "An unknown error occurred.",
+		})
+		return
+
+	}
 
 	message := fmt.Sprintf("'%s' uploaded!", file.Filename)
 	log.Info(message)
