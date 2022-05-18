@@ -2,6 +2,8 @@ name: Integration
 
 on:
   push:
+    branches-ignore:    
+      - 'main'
   workflow_call:
   pull_request:
     types:
@@ -24,7 +26,10 @@ jobs:
         
     - name: cd into /src
       run: cd src && pwd
-        
+      
+    - name: Install
+      run: go mod download
+      
     - name: Build
       run: go build .
       
