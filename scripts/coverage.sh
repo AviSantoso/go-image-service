@@ -1,3 +1,5 @@
+cd src && pwd
+
 min_coverage=90
 
 ignored_files='Internal'

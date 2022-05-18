@@ -23,6 +23,9 @@ jobs:
         with:
           go-version: 1.18
 
+      - name: Requirements
+        run: ./scripts/requirements.sh
+
       - name: Build
         run: cd src && pwd && go build .
 
