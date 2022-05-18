@@ -2,7 +2,8 @@ name: Deployment
 
 on:
   push:
-    branches: [ main ]
+    branches:
+      - "main"
   workflow_dispatch:
 
 env:
@@ -10,7 +11,6 @@ env:
   IMAGE_NAME: go-image-service
 
 jobs:
-  
   integration:
     uses: AviSantoso/go-image-service/.github/workflows/integration.yml@main
 
@@ -18,23 +18,23 @@ jobs:
     needs: integration
     runs-on: ubuntu-latest
 
-    steps:    
-    - name: Checkout
-      uses: actions/checkout@v3
-    
-    - name: Setup doctl
-      uses: digitalocean/action-doctl@v2.1.0
-      with:
-        token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
-      
-    - name: Login to the Digital Ocean registry
-      run: doctl registry login
-    
-    - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag ${{env.IMAGE_NAME}}:latest
-    
-    - name: Tag the Docker image for the repository
-      run: docker tag ${{env.IMAGE_NAME}}:latest ${{env.REGISTRY_URI}}/${{env.IMAGE_NAME}}:latest
-    
-    - name: Push the Docker image
-      run: docker push ${{env.REGISTRY_URI}}/${{env.IMAGE_NAME}}:latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup doctl
+        uses: digitalocean/action-doctl@v2.1.0
+        with:
+          token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
+
+      - name: Login to the Digital Ocean registry
+        run: doctl registry login
+
+      - name: Build the Docker image
+        run: docker build . --file Dockerfile --tag ${{env.IMAGE_NAME}}:latest
+
+      - name: Tag the Docker image for the repository
+        run: docker tag ${{env.IMAGE_NAME}}:latest ${{env.REGISTRY_URI}}/${{env.IMAGE_NAME}}:latest
+
+      - name: Push the Docker image
+        run: docker push ${{env.REGISTRY_URI}}/${{env.IMAGE_NAME}}:latest
