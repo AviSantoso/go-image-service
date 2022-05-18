@@ -40,7 +40,7 @@ func StorageThrowsWhenAnItemPathAlreadyExists(t *testing.T, impl StorageInterfac
 	item := []byte("Hello, world!")
 
 	err := impl.Store(path, item)
-	if err == nil {
+	if err != nil {
 		t.Error(err.Error())
 	}
 

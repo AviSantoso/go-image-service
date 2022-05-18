@@ -17,3 +17,7 @@ tmp
 temp
 images
 bash
+bin
+
+coverage.out
+coverage.lcov
