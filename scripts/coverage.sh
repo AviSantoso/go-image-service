@@ -16,7 +16,7 @@ echo "$cov_res"
 
 cat $cov_out | grep -i -v $ignored_files > $cov_out
 
-gcov2lcov -infile=coverage.out -outfile=coverage.lcov
+gcov2lcov -infile=coverage.out -outfile=lcov.info
 
 if echo $cov_res | grep -i -q 'no test files';
     then

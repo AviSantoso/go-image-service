@@ -20,4 +20,4 @@ bash
 bin
 
 coverage.out
-coverage.lcov
+lcov.info
