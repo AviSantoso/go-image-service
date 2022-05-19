@@ -2,7 +2,7 @@ cd src && pwd
 
 min_coverage=90
 
-ignored_files='Internal'
+ignored_files='Tests'
 
 cov_out=coverage.out
 
