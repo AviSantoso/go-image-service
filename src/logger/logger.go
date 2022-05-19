@@ -1,6 +1,8 @@
 package logger
 
 import (
+	"io"
+
 	log "github.com/sirupsen/logrus"
 )
 
@@ -9,22 +11,27 @@ type Logger struct {
 	Path string
 }
 
-func New(path string, id string) Logger {
+func New(writer io.Writer, path string, id string) Logger {
 	log.SetFormatter(&log.JSONFormatter{})
+	log.SetOutput(writer)
 	logger := Logger{Id: id, Path: path}
 	return logger
 }
 
-func (logger Logger) Info(message string) {
-	log.WithFields(log.Fields{
+func (logger Logger) Info(message string) *log.Entry {
+	out := log.WithFields(log.Fields{
 		"path": logger.Path,
 		"id":   logger.Id,
-	}).Info(message)
+	})
+	out.Info(message)
+	return out
 }
 
-func (logger Logger) Error(message string) {
-	log.WithFields(log.Fields{
+func (logger Logger) Error(message string) *log.Entry {
+	out := log.WithFields(log.Fields{
 		"path": logger.Path,
 		"id":   logger.Id,
-	}).Error(message)
+	})
+	out.Error(message)
+	return out
 }

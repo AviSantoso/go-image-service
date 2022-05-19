@@ -16,26 +16,26 @@ func T_StorageInterfaceRetrieve(t *testing.T, impl StorageInterface) {
 
 	err := impl.Store(path, item)
 	if err != nil {
-		t.Error(err.Error())
+		t.Errorf(err.Error())
 	}
 
 	received, err := impl.Retrieve(path)
 	if err != nil {
-		t.Error(err.Error())
+		t.Errorf(err.Error())
 	}
 
 	if !_isByteArrEqual(item, received) {
-		t.Error("Failed to store and retrieve the same item.")
+		t.Errorf("Failed to store and retrieve the same item.")
 	}
 
 	failPath := "Goodbye/World"
 
 	item, err = impl.Retrieve(failPath)
 	if err == nil {
-		t.Error("This should return an error since the item does not exist.")
+		t.Errorf("This should return an error since the item does not exist.")
 	}
 	if item != nil {
-		t.Error("This should return an empty item since the item does not exist.")
+		t.Errorf("This should return an empty item since the item does not exist.")
 	}
 }
 
@@ -51,12 +51,12 @@ func T_StorageInterfaceStore(t *testing.T, impl StorageInterface) {
 
 	err := impl.Store(path, item)
 	if err != nil {
-		t.Error(err.Error())
+		t.Errorf(err.Error())
 	}
 
 	err = impl.Store(path, item)
 	if err == nil {
-		t.Error("Should fail to store an item to the same path.")
+		t.Errorf("Should fail to store an item to the same path.")
 	}
 }
 
@@ -73,31 +73,31 @@ func T_StorageInterfaceHas(t *testing.T, impl StorageInterface) {
 
 	exists, err := impl.Has(pathSuccess)
 	if err != nil {
-		t.Error(err.Error())
+		t.Errorf(err.Error())
 	}
 	if exists {
-		t.Error("The item should not exist yet.")
+		t.Errorf("The item should not exist yet.")
 	}
 
 	err = impl.Store(pathSuccess, item)
 	if err != nil {
-		t.Error(err.Error())
+		t.Errorf(err.Error())
 	}
 
 	exists, err = impl.Has(pathSuccess)
 	if err != nil {
-		t.Error(err.Error())
+		t.Errorf(err.Error())
 	}
 	if !exists {
-		t.Error("The item should exist.")
+		t.Errorf("The item should exist.")
 	}
 
 	exists, err = impl.Has(pathFail)
 	if err != nil {
-		t.Error(err.Error())
+		t.Errorf(err.Error())
 	}
 	if exists {
-		t.Error("The item should not exist.")
+		t.Errorf("The item should not exist.")
 	}
 }
 
@@ -113,22 +113,22 @@ func T_StorageInterfaceDelete(t *testing.T, impl StorageInterface) {
 
 	err := impl.Delete(path)
 	if err == nil {
-		t.Error("The item should not exist yet.")
+		t.Errorf("The item should not exist yet.")
 	}
 
 	err = impl.Store(path, item)
 	if err != nil {
-		t.Error(err.Error())
+		t.Errorf(err.Error())
 	}
 
 	err = impl.Delete(path)
 	if err != nil {
-		t.Error(err.Error())
+		t.Errorf(err.Error())
 	}
 
 	err = impl.Delete(path)
 	if err == nil {
-		t.Error("This item should already be deleted and should not exist.")
+		t.Errorf("This item should already be deleted and should not exist.")
 	}
 }
 

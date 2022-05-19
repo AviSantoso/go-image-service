@@ -14,7 +14,7 @@ import (
 
 func HandlerHello(ctx *gin.Context) {
 	id, _ := gonanoid.New()
-	log := logger.New("handler/hello", id)
+	log := logger.New(os.Stdout,"handler/hello", id)
 	name := ctx.DefaultQuery("name", "there")
 
 	message := fmt.Sprintf("Hello, %s!", name)
@@ -27,7 +27,7 @@ func HandlerHello(ctx *gin.Context) {
 
 func HandlerImageUpload(ctx *gin.Context) {
 	id, _ := gonanoid.New()
-	log := logger.New("handler/image/upload", id)
+	log := logger.New(os.Stdout,"handler/image/upload", id)
 	file, err := ctx.FormFile("file")
 
 	if err != nil {
@@ -75,7 +75,7 @@ func HandlerImageUpload(ctx *gin.Context) {
 
 func main() {
 	id, _ := gonanoid.New()
-	log := logger.New("main", id)
+	log := logger.New(os.Stdout, "main", id)
 
 	temp_dir := filepath.Join(".", "temp")
 	err := os.MkdirAll(temp_dir, os.ModePerm)
