@@ -4,27 +4,22 @@ import (
 	"testing"
 )
 
-func TestInMemoryStorageCanStoreAndRetrieveAnItem(t *testing.T) {
+func TestInMemoryStorageRetrieve(t *testing.T) {
 	storage := NewInMemoryStorage()
-	StorageCanStoreAndRetrieveAnItem(t, storage)
+	T_StorageInterfaceRetrieve(t, storage)
 }
 
-func TestInMemoryStorageThrowsWhenAnItemPathAlreadyExists(t *testing.T) {
+func TestInMemoryStorageStore(t *testing.T) {
 	storage := NewInMemoryStorage()
-	StorageThrowsWhenAnItemPathAlreadyExists(t, storage)
+	T_StorageInterfaceStore(t, storage)
 }
 
-func TestInMemoryStorageCanReturnWhetherOrNotAnItemExists(t *testing.T) {
+func TestInMemoryStorageHas(t *testing.T) {
 	storage := NewInMemoryStorage()
-	StorageCanReturnWhetherOrNotAnItemExists(t, storage)
+	T_StorageInterfaceHas(t, storage)
 }
 
-func TestInMemoryStorageShouldReturnErrorWhenRetrievingNonExistentItems(t *testing.T) {
+func TestInMemoryStorageDelete(t *testing.T) {
 	storage := NewInMemoryStorage()
-	StorageShouldReturnErrorWhenRetrievingNonExistentItems(t, storage)
-}
-
-func TestInMemoryStorageShouldBeAbleToDeleteExistingItemsAndReturnErrorWhenDeletingNonExistentItems(t *testing.T) {
-	storage := NewInMemoryStorage()
-	StorageShouldBeAbleToDeleteExistingItemsAndReturnErrorWhenDeletingNonExistentItems(t, storage)
+	T_StorageInterfaceDelete(t, storage)
 }

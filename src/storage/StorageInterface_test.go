@@ -4,19 +4,13 @@ import (
 	"testing"
 )
 
-func isByteArrEqual(a, b []byte) bool {
-	if len(a) != len(b) {
-		return false
-	}
-	for i := range a {
-		if a[i] != b[i] {
-			return false
-		}
-	}
-	return true
-}
-
-func StorageCanStoreAndRetrieveAnItem(t *testing.T, impl StorageInterface) {
+/*
+	Given that an item exists,
+	When the item is retrieved,
+	Then the implementation should return the item and a nil error
+	And a nil item and an error otherwise
+*/
+func T_StorageInterfaceRetrieve(t *testing.T, impl StorageInterface) {
 	path := "Hello/World"
 	item := []byte("Hello, world!")
 
@@ -30,12 +24,28 @@ func StorageCanStoreAndRetrieveAnItem(t *testing.T, impl StorageInterface) {
 		t.Error(err.Error())
 	}
 
-	if !isByteArrEqual(item, received) {
+	if !_isByteArrEqual(item, received) {
 		t.Error("Failed to store and retrieve the same item.")
+	}
+
+	failPath := "Goodbye/World"
+
+	item, err = impl.Retrieve(failPath)
+	if err == nil {
+		t.Error("This should return an error since the item does not exist.")
+	}
+	if item != nil {
+		t.Error("This should return an empty item since the item does not exist.")
 	}
 }
 
-func StorageThrowsWhenAnItemPathAlreadyExists(t *testing.T, impl StorageInterface) {
+/*
+	Given that a path exists,
+	When an item is stored at the same path,
+	Then the impl should return an error
+	And a nil error otherwise
+*/
+func T_StorageInterfaceStore(t *testing.T, impl StorageInterface) {
 	path := "Hello/World"
 	item := []byte("Hello, world!")
 
@@ -50,7 +60,13 @@ func StorageThrowsWhenAnItemPathAlreadyExists(t *testing.T, impl StorageInterfac
 	}
 }
 
-func StorageCanReturnWhetherOrNotAnItemExists(t *testing.T, impl StorageInterface) {
+/*
+	Given that a path exists,
+	When we check for its existence,
+	Then the impl should tell us true
+	And false otherwise
+*/
+func T_StorageInterfaceHas(t *testing.T, impl StorageInterface) {
 	pathFail := "Goodbye/World"
 	pathSuccess := "Hello, world!"
 	item := []byte("Hello, world!")
@@ -85,19 +101,13 @@ func StorageCanReturnWhetherOrNotAnItemExists(t *testing.T, impl StorageInterfac
 	}
 }
 
-func StorageShouldReturnErrorWhenRetrievingNonExistentItems(t *testing.T, impl StorageInterface) {
-	path := "Hello/World"
-
-	item, err := impl.Retrieve(path)
-	if err == nil {
-		t.Error("This should return an error since the item does not exist.")
-	}
-	if item != nil {
-		t.Error("This should return an empty item since the item does not exist.")
-	}
-}
-
-func StorageShouldBeAbleToDeleteExistingItemsAndReturnErrorWhenDeletingNonExistentItems(t *testing.T, impl StorageInterface) {
+/*
+	Given that an item exists,
+	When it is deleted,
+	Then the impl should not return an error
+	And an error if it does not exist
+*/
+func T_StorageInterfaceDelete(t *testing.T, impl StorageInterface) {
 	path := "Hello, world!"
 	item := []byte("Hello, world!")
 
@@ -120,5 +130,16 @@ func StorageShouldBeAbleToDeleteExistingItemsAndReturnErrorWhenDeletingNonExiste
 	if err == nil {
 		t.Error("This item should already be deleted and should not exist.")
 	}
+}
 
+func _isByteArrEqual(a, b []byte) bool {
+	if len(a) != len(b) {
+		return false
+	}
+	for i := range a {
+		if a[i] != b[i] {
+			return false
+		}
+	}
+	return true
 }
