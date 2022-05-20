@@ -12,39 +12,50 @@ import (
 	gonanoid "github.com/matoous/go-nanoid/v2"
 )
 
-func HandlerHello(ctx *gin.Context) {
-	id, _ := gonanoid.New()
-	log := logger.New(os.Stdout,"handler/hello", id)
-	name := ctx.DefaultQuery("name", "there")
+var UNKNOWN_ERROR = "An unknown error occurred."
 
+func Hello(name string) (string, error) {
+	id, _ := gonanoid.New()
+	log := logger.New(os.Stdout, "main/hello", id)
 	message := fmt.Sprintf("Hello, %s!", name)
 	log.Info(message)
+	return message, nil
+}
 
-	ctx.JSON(http.StatusOK, gin.H{
-		"message": message,
-	})
+func HandlerHello(ctx *gin.Context) {
+	id, _ := gonanoid.New()
+	log := logger.New(os.Stdout, "main/handler/hello", id)
+
+	name := ctx.DefaultQuery("name", "there")
+	message, err := Hello(name)
+
+	if err != nil {
+		log.Error(err.Error())
+		CtxError(ctx)
+		return
+	}
+
+	CtxOk(ctx, message)
 }
 
 func HandlerImageUpload(ctx *gin.Context) {
 	id, _ := gonanoid.New()
-	log := logger.New(os.Stdout,"handler/image/upload", id)
+	log := logger.New(os.Stdout, "handler/image/upload", id)
 	file, err := ctx.FormFile("file")
 
 	if err != nil {
 		log.Error(err.Error())
-		ctx.JSON(http.StatusInternalServerError, gin.H{
-			"error": "An unknown error occurred.",
-		})
+		CtxError(ctx)
 		return
 	}
 
 	content_type := (file.Header.Get("Content-Type"))
 
 	if !strings.HasPrefix(content_type, "image/") {
-		message := fmt.Sprintf("The content type %s is not supported for this route.", content_type)
-		log.Error(message)
+		err := fmt.Sprintf("The content type %s is not supported for this route.", content_type)
+		log.Error(err)
 		ctx.JSON(http.StatusBadRequest, gin.H{
-			"error": message,
+			"error": err,
 		})
 		return
 	}
@@ -58,18 +69,25 @@ func HandlerImageUpload(ctx *gin.Context) {
 
 	if err != nil {
 		log.Error(err.Error())
-		ctx.JSON(http.StatusInternalServerError, gin.H{
-			"error": "An unknown error occurred.",
-		})
+		CtxError(ctx)
 		return
-
 	}
 
 	message := fmt.Sprintf("'%s' uploaded!", file.Filename)
 	log.Info(message)
 
+	CtxOk(ctx, message)
+}
+
+func CtxOk(ctx *gin.Context, message string) {
 	ctx.JSON(http.StatusOK, gin.H{
 		"message": message,
+	})
+}
+
+func CtxError(ctx *gin.Context) {
+	ctx.JSON(http.StatusOK, gin.H{
+		"message": UNKNOWN_ERROR,
 	})
 }
 

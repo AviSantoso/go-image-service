@@ -18,19 +18,22 @@ cat $cov_out | grep -i -v $ignored_files > $cov_out
 
 gcov2lcov -infile=$cov_out -outfile=lcov.info
 
-if echo $cov_res | grep -i -q 'no test files';
-    then
-        echo "ERR: All modules should be tested."
-        exit 1
+if echo $cov_res | grep -i -q 'no test files'; then
+    echo "ERR: All modules should be tested."
+    exit 1
+fi
+
+if echo $cov_res | grep -i -q 'FAIL'; then
+    echo "ERR: All modules should pass the tests."
+    exit 1
 fi
 
 coverages=`echo $cov_res | grep -oP 'coverage\: (\d+)' | grep -oP '\d+'`
 
 for cov in $coverages; do
-    if cov < min_coverage ;
-        then
-            echo "ERR: All modules should have a coverage above $min_coverage."
-            exit 1
+    if ((cov < min_coverage)); then
+        echo "ERR: All modules should have a coverage above $min_coverage."
+        exit 1
     fi
 done
 
