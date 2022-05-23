@@ -6,12 +6,15 @@ import (
 	"os"
 	"path/filepath"
 
+	imageservice "github.com/AviSantoso/go-image-service/image-service"
 	"github.com/AviSantoso/go-image-service/logger"
+	"github.com/AviSantoso/go-image-service/storage"
 	gin "github.com/gin-gonic/gin"
 	gonanoid "github.com/matoous/go-nanoid/v2"
 )
 
 var UNKNOWN_ERROR = "An unknown error occurred."
+var imageService = imageservice.New(os.Stdout, storage.NewInMemoryStorage(os.Stdout))
 
 func Hello(name string) (string, error) {
 	id, _ := gonanoid.New()

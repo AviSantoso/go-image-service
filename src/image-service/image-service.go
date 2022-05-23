@@ -21,10 +21,9 @@ type HandlerResult struct {
 	Data   gin.H
 }
 
-func New(writer io.Writer) ImageService {
+func New(writer io.Writer, storage storage.StorageInterface) ImageService {
 	id, _ := gonanoid.New()
 	logger := logger.New(writer, "image-service/image-service", id)
-	storage := storage.NewInMemoryStorage(writer)
 	service := ImageService{storage: storage, logger: logger}
 	return service
 }

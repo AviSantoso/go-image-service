@@ -9,6 +9,7 @@ import (
 	"net/http"
 	"testing"
 
+	"github.com/AviSantoso/go-image-service/storage"
 	gonanoid "github.com/matoous/go-nanoid/v2"
 )
 
@@ -18,7 +19,8 @@ import (
  */
 func TestImageServiceGettingStarted(t *testing.T) {
 	var output bytes.Buffer
-	service := New(&output)
+	var storage = storage.NewInMemoryStorage(&output)
+	service := New(&output, storage)
 
 	// A test image is provided in this folder to demo functionality
 	img, err := ioutil.ReadFile("test.png")

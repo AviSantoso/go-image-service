@@ -6,13 +6,10 @@ import (
 	"os"
 	"strings"
 
-	imageservice "github.com/AviSantoso/go-image-service/image-service"
 	"github.com/AviSantoso/go-image-service/logger"
 	gin "github.com/gin-gonic/gin"
 	gonanoid "github.com/matoous/go-nanoid/v2"
 )
-
-var imageService = imageservice.New(os.Stdout)
 
 func HandlerHello(ctx *gin.Context) {
 	id, _ := gonanoid.New()
@@ -73,7 +70,22 @@ func HandlerImageUpload(ctx *gin.Context) {
 	}
 
 	res := imageService.UploadImage(id, bytes)
+	ctx.JSON(res.Status, res.Data)
+}
 
+func HandlerImageDownload(ctx *gin.Context) {
+	_id, _ := gonanoid.New()
+	log := logger.New(os.Stdout, "handler/image/download", _id)
+
+	id := ctx.Query("id")
+	if len(id) == 0 {
+		err := "Id must be a non-empty string."
+		log.Error(err)
+		CtxError(ctx, err)
+		return
+	}
+
+	res := imageService.DownloadImage(id)
 	ctx.JSON(res.Status, res.Data)
 }
 
@@ -87,6 +99,7 @@ func getEngine() *gin.Engine {
 			image := v1.Group("/image")
 			{
 				image.POST("/upload/:id", HandlerImageUpload)
+				image.GET("/download/:id", HandlerImageDownload)
 			}
 		}
 	}
