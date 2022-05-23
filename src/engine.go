@@ -31,7 +31,7 @@ func HandlerImageUpload(ctx *gin.Context) {
 	_id, _ := gonanoid.New()
 	log := logger.New(os.Stdout, "handler/image/upload", _id)
 
-	id := ctx.Query("id")
+	id := ctx.Param("id")
 	if len(id) == 0 {
 		err := "Id must be a non-empty string."
 		log.Error(err)
@@ -77,7 +77,7 @@ func HandlerImageDownload(ctx *gin.Context) {
 	_id, _ := gonanoid.New()
 	log := logger.New(os.Stdout, "handler/image/download", _id)
 
-	id := ctx.Query("id")
+	id := ctx.Param("id")
 	if len(id) == 0 {
 		err := "Id must be a non-empty string."
 		log.Error(err)
