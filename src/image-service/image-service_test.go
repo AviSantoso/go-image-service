@@ -36,12 +36,12 @@ func TestImageServiceGettingStarted(t *testing.T) {
 	res := service.UploadImage(id, img)
 
 	// On a successful upload, the status is 200 OK
-	if res.status != http.StatusOK {
-		t.Errorf("Expected status to be OK but got %d", res.status)
+	if res.Status != http.StatusOK {
+		t.Errorf("Expected status to be OK but got %d", res.Status)
 	}
 
 	// The data exposes a field called 'id' that is a string and not empty
-	outId, ok := res.data["id"].(string)
+	outId, ok := res.Data["id"].(string)
 	if !ok || len(outId) == 0 {
 		t.Errorf("Expected id to be a string and not be empty.")
 	}
@@ -52,7 +52,7 @@ func TestImageServiceGettingStarted(t *testing.T) {
 	}
 
 	// The data exposes a field called 'message' that is a string and not empty
-	message, ok := res.data["id"].(string)
+	message, ok := res.Data["id"].(string)
 	if !ok || len(message) == 0 {
 		t.Errorf("Expected message to be a string and not be empty.")
 	}
@@ -61,12 +61,12 @@ func TestImageServiceGettingStarted(t *testing.T) {
 	res = service.DownloadImage(id)
 
 	// On a successful download, the status is 200 OK
-	if res.status != http.StatusOK {
-		t.Errorf("Expected status to be 200 OK, but got %d", res.status)
+	if res.Status != http.StatusOK {
+		t.Errorf("Expected status to be 200 OK, but got %d", res.Status)
 	}
 
 	// The data exposes a field called 'id' that is a string and not empty
-	outId, ok = res.data["id"].(string)
+	outId, ok = res.Data["id"].(string)
 	if !ok || len(outId) == 0 {
 		t.Errorf("Expected id to be a string and not be empty.")
 	}
@@ -77,13 +77,13 @@ func TestImageServiceGettingStarted(t *testing.T) {
 	}
 
 	// The data exposes a field called 'message' that is a string and not empty
-	message, ok = res.data["id"].(string)
+	message, ok = res.Data["id"].(string)
 	if !ok || len(message) == 0 {
 		t.Errorf("Expected message to be a string and not be empty.")
 	}
 
 	// The data exposes a field called 'image' that is a byte array and not empty
-	image, ok := res.data["image"].([]byte)
+	image, ok := res.Data["image"].([]byte)
 	if !ok || len(image) == 0 {
 		t.Errorf("Expected image to be a byte array and not be empty.")
 	}

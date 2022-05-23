@@ -17,8 +17,8 @@ type ImageService struct {
 }
 
 type HandlerResult struct {
-	status int
-	data   gin.H
+	Status int
+	Data   gin.H
 }
 
 func New(writer io.Writer) ImageService {
@@ -36,12 +36,12 @@ func (service ImageService) UploadImage(id string, bytes []byte) HandlerResult {
 	err := service.storage.Store(id, bytes)
 	if err != nil {
 		service.logger.Error(err.Error())
-		return HandlerResult{status: http.StatusBadRequest, data: gin.H{
+		return HandlerResult{Status: http.StatusBadRequest, Data: gin.H{
 			"message": err.Error(),
 		}}
 	}
 
-	return HandlerResult{status: http.StatusOK, data: gin.H{
+	return HandlerResult{Status: http.StatusOK, Data: gin.H{
 		"id":      id,
 		"message": fmt.Sprintf("Successfully uploaded image with id %s", id),
 	}}
@@ -54,12 +54,12 @@ func (service ImageService) DownloadImage(id string) HandlerResult {
 
 	if err != nil {
 		service.logger.Error(err.Error())
-		return HandlerResult{status: http.StatusBadRequest, data: gin.H{
+		return HandlerResult{Status: http.StatusBadRequest, Data: gin.H{
 			"message": err.Error(),
 		}}
 	}
 
-	return HandlerResult{status: http.StatusOK, data: gin.H{
+	return HandlerResult{Status: http.StatusOK, Data: gin.H{
 		"id":      id,
 		"message": fmt.Sprintf("Retrieved image with id %s", id),
 		"image":   image,
