@@ -19,5 +19,6 @@ images
 bash
 bin
 
+coverage.profile
 coverage.out
 lcov.info

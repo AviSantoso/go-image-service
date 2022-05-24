@@ -4,19 +4,21 @@ min_coverage=90
 
 ignored_files='Tests'
 
+cov_profile=coverage.profile
 cov_out=coverage.out
+lcov_file=lcov.info
 
 echo "Running coverage test with min_coverage=$min_coverage and ignored_files=$ignored_files"
 
 cov_files=`go list ./... | grep -i -v $ignored_files`
 
-cov_res="`go test -cover -covermode=atomic -coverprofile=$cov_out $cov_files`"
+cov_res="`go test -cover -covermode=atomic -coverprofile=$cov_profile $cov_files`"
 
 echo "$cov_res"
 
-cat $cov_out | grep -i -v $ignored_files > $cov_out
+cat $cov_profile | grep -i -v $ignored_files > $cov_out
 
-gcov2lcov -infile=$cov_out -outfile=lcov.info
+gcov2lcov -infile=$cov_out -outfile=$lcov_file
 
 if echo $cov_res | grep -i -q 'no test files'; then
     echo "ERR: All modules should be tested."

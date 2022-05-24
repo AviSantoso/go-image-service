@@ -28,3 +28,9 @@ func TestInMemoryStorageDelete(t *testing.T) {
 	storage := NewInMemoryStorage(&output)
 	T_StorageInterfaceDelete(t, storage)
 }
+
+func TestInMemoryStorageZeroLengthContent(t *testing.T) {
+	var output bytes.Buffer
+	storage := NewInMemoryStorage(&output)
+	T_StorageInterfaceZeroLengthContent(t, storage)
+}

@@ -1,10 +1,8 @@
 package main
 
 import (
-	"fmt"
 	"io/ioutil"
 	"os"
-	"strings"
 
 	"github.com/AviSantoso/go-image-service/logger"
 	gin "github.com/gin-gonic/gin"
@@ -12,18 +10,8 @@ import (
 )
 
 func HandlerHello(ctx *gin.Context) {
-	id, _ := gonanoid.New()
-	log := logger.New(os.Stdout, "main/handler/hello", id)
-
 	name := ctx.DefaultQuery("name", "there")
-	message, err := Hello(name)
-
-	if err != nil {
-		log.Error(err.Error())
-		CtxErrorUnknown(ctx)
-		return
-	}
-
+	message := Hello(name)
 	CtxOk(ctx, message)
 }
 
@@ -46,21 +34,13 @@ func HandlerImageUpload(ctx *gin.Context) {
 		return
 	}
 
-	content_type := (form_file.Header.Get("Content-Type"))
-
-	if !strings.HasPrefix(content_type, "image/") {
-		err := fmt.Sprintf("The content type %s is not supported for this route.", content_type)
-		log.Error(err)
-		CtxError(ctx, err)
-		return
-	}
-
 	file, err := form_file.Open()
 	if err != nil {
 		log.Error(err.Error())
 		CtxErrorUnknown(ctx)
 		return
 	}
+	defer file.Close()
 
 	bytes, err := ioutil.ReadAll(file)
 	if err != nil {

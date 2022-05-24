@@ -16,12 +16,12 @@ import (
 var UNKNOWN_ERROR = "An unknown error occurred."
 var imageService = imageservice.New(os.Stdout, storage.NewInMemoryStorage(os.Stdout))
 
-func Hello(name string) (string, error) {
+func Hello(name string) string {
 	id, _ := gonanoid.New()
 	log := logger.New(os.Stdout, "main/hello", id)
 	message := fmt.Sprintf("Hello, %s!", name)
 	log.Info(message)
-	return message, nil
+	return message
 }
 
 func CtxOk(ctx *gin.Context, message string) {
@@ -31,7 +31,7 @@ func CtxOk(ctx *gin.Context, message string) {
 }
 
 func CtxError(ctx *gin.Context, message string) {
-	ctx.JSON(http.StatusOK, gin.H{
+	ctx.JSON(http.StatusInternalServerError, gin.H{
 		"error": message,
 	})
 }

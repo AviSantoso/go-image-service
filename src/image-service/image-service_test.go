@@ -23,7 +23,7 @@ func TestImageServiceGettingStarted(t *testing.T) {
 	service := New(&output, storage)
 
 	// A test image is provided in this folder to demo functionality
-	img, err := ioutil.ReadFile("test.png")
+	img, err := ioutil.ReadFile("../assets/test.png")
 	if err != nil {
 		t.Errorf(err.Error())
 	}
@@ -88,5 +88,39 @@ func TestImageServiceGettingStarted(t *testing.T) {
 	image, ok := res.Data["image"].([]byte)
 	if !ok || len(image) == 0 {
 		t.Errorf("Expected image to be a byte array and not be empty.")
+	}
+}
+
+/** If we try to store an empty image, then the service returns an error */
+func TestEmptyImage(t *testing.T) {
+	var output bytes.Buffer
+	var storage = storage.NewInMemoryStorage(&output)
+	service := New(&output, storage)
+
+	empty_image := []byte("")
+	id, err := gonanoid.New()
+	if err != nil {
+		t.Errorf(err.Error())
+	}
+
+	res := service.UploadImage(id, empty_image)
+
+	if res.Status == http.StatusOK {
+		t.Errorf("Expected status not to be 200 OK, but received %d", res.Status)
+	}
+}
+
+/** If we try retrieving a nonexistent path, then the service returns an error */
+func TestNonExistingPath(t *testing.T) {
+	var output bytes.Buffer
+	var storage = storage.NewInMemoryStorage(&output)
+	service := New(&output, storage)
+
+	non_existent_path := "HELLO/THERE!"
+
+	res := service.DownloadImage(non_existent_path)
+
+	if res.Status == http.StatusOK {
+		t.Errorf("Expected status not to be 200 OK, but received %d", res.Status)
 	}
 }

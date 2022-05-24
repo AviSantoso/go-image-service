@@ -132,6 +132,20 @@ func T_StorageInterfaceDelete(t *testing.T, impl StorageInterface) {
 	}
 }
 
+/**
+ * Any storage implementation should return an error if the item has a content
+ * length of zero.
+ */
+func T_StorageInterfaceZeroLengthContent(t *testing.T, impl StorageInterface) {
+	path := "Hello, world!"
+	item := []byte("")
+
+	err := impl.Store(path, item)
+	if err == nil {
+		t.Errorf("Expected interface to return an error if the item length is zero.")
+	}
+}
+
 func _isByteArrEqual(a, b []byte) bool {
 	if len(a) != len(b) {
 		return false
