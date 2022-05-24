@@ -12,7 +12,7 @@ echo "Running coverage test with min_coverage=$min_coverage and ignored_files=$i
 
 cov_files=`go list ./... | grep -i -v $ignored_files`
 
-cov_res="`go test -cover -covermode=atomic -coverprofile=$cov_profile $cov_files`"
+cov_res="`go test -cover -coverprofile=$cov_profile $cov_files`"
 
 echo "$cov_res"
 

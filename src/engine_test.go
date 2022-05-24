@@ -100,15 +100,18 @@ func TestHelloWorld(t *testing.T) {
 func TestUploadDownloadImage(t *testing.T) {
 	engine := getEngine()
 
-	new_id, err := gonanoid.New()
+	img_id, err := gonanoid.New()
 	if err != nil {
 		t.Errorf(err.Error())
 	}
 
 	// We send a POST request to this route with a multipart image as the body.
 	// Ensure that the content type is multipart/form-data at the key 'file'.
-	route := fmt.Sprintf("/api/v1/image/upload/%s", new_id)
-	req, _ := UploadMultipartImage(route, "file", "./assets/test.png")
+	route := fmt.Sprintf("/api/v1/image/upload/%s", img_id)
+	req, err := UploadMultipartImage(route, "file", "./assets/test.png")
+	if err != nil {
+		t.Errorf(err.Error())
+	}
 
 	w := httptest.NewRecorder()
 	engine.ServeHTTP(w, req)
@@ -133,7 +136,101 @@ func TestUploadDownloadImage(t *testing.T) {
 	if !ok {
 		t.Errorf("Expected id to be a string, but got %v", data["id"])
 	}
-	if id != new_id {
-		t.Errorf("Expected the response id to be %s but received %s instead.", new_id, id)
+	if id != img_id {
+		t.Errorf("Expected the response id to be %s but received %s instead.", img_id, id)
+	}
+
+	// To retrieve the image that is stored, we now need to request it from the
+	// server. We use the ID that we used to upload the file in order to retrieve
+	// the item. No body is needed for this request.
+	route = fmt.Sprintf("/api/v1/image/download/%s", img_id)
+	req, err = http.NewRequest("GET", route, nil)
+
+	if err != nil {
+		t.Errorf(err.Error())
+	}
+
+	w = httptest.NewRecorder()
+	engine.ServeHTTP(w, req)
+
+	if w.Code != http.StatusOK {
+		t.Errorf("Expected status to be 200 OK, but received %d instead.", w.Code)
+	}
+
+	body, err = ioutil.ReadAll(w.Body)
+	if err != nil {
+		t.Errorf(err.Error())
+	}
+
+	err = json.Unmarshal([]byte(body), &data)
+	if err != nil {
+		t.Errorf(err.Error())
+	}
+
+	// The image can be retrieved as a string at the field 'image'
+	img, ok := data["image"].(string)
+	if !ok {
+		t.Errorf("Expected image to be a string, but got %v", data["image"])
+	}
+
+	if len(img) == 0 {
+		t.Errorf("Expected image to not be empty.")
+	}
+}
+
+/** Attempting to upload or retrieve images with an empty ID will result in an error */
+func TestErrorOnEmptyId(t *testing.T) {
+	engine := getEngine()
+
+	// No ID in the request URI, so will throw an error.
+	req, err := UploadMultipartImage("/api/v1/image/upload", "file", "./assets/test.png")
+	if err != nil {
+		t.Errorf(err.Error())
+	}
+
+	w := httptest.NewRecorder()
+	engine.ServeHTTP(w, req)
+
+	if w.Code == http.StatusOK {
+		t.Errorf("Expected status not to be 200 OK, but received %d instead.", w.Code)
+	}
+
+	// No ID in the request URI, so will throw an error.
+	req, err = http.NewRequest("GET", "/api/v1/image/download", nil)
+
+	if err != nil {
+		t.Errorf(err.Error())
+	}
+
+	w = httptest.NewRecorder()
+	engine.ServeHTTP(w, req)
+
+	if w.Code == http.StatusOK {
+		t.Errorf("Expected status not to be 200 OK, but received %d instead.", w.Code)
+	}
+}
+
+/** Attempting to upload an image to the wrong key form will result in an error */
+func TestErrorWrongKey(t *testing.T) {
+	engine := getEngine()
+
+	img_id, err := gonanoid.New()
+	if err != nil {
+		t.Errorf(err.Error())
+	}
+
+	route := fmt.Sprintf("/api/v1/image/upload/%s", img_id)
+
+	// Notice that the key here is 'image' where it should be 'file' instead
+	req, err := UploadMultipartImage(route, "image", "./assets/test.png")
+	if err != nil {
+		t.Errorf(err.Error())
+	}
+
+	w := httptest.NewRecorder()
+	engine.ServeHTTP(w, req)
+
+	if w.Code == http.StatusOK {
+		t.Errorf("Expected status not to be 200 OK, but received %d instead.", w.Code)
 	}
 }
