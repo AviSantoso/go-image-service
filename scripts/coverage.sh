@@ -1,41 +1,19 @@
+echo "Starting coverage test"
+
 cd src && pwd
 
-min_coverage=90
-
-ignored_files='Tests'
+set -e
 
 cov_profile=coverage.profile
 cov_out=coverage.out
 lcov_file=lcov.info
 
-echo "Running coverage test with min_coverage=$min_coverage and ignored_files=$ignored_files"
+echo "Running courtney on all modules"
 
-cov_files=`go list ./... | grep -i -v $ignored_files`
+../scripts/courtney -e ./...
 
-cov_res="`go test -cover -coverprofile=$cov_profile $cov_files`"
-
-echo "$cov_res"
-
-cat $cov_profile | grep -i -v $ignored_files > $cov_out
+echo "Creating '$lcov_file' from '$cov_out'"
 
 gcov2lcov -infile=$cov_out -outfile=$lcov_file
 
-if echo $cov_res | grep -i -q 'no test files'; then
-    echo "ERR: All modules should be tested."
-    exit 1
-fi
-
-if echo $cov_res | grep -i -q 'FAIL'; then
-    echo "ERR: All modules should pass the tests."
-    exit 1
-fi
-
-coverages=`echo $cov_res | grep -oP 'coverage\: (\d+)' | grep -oP '\d+'`
-
-for cov in $coverages; do
-    if ((cov < min_coverage)); then
-        echo "ERR: All modules should have a coverage above $min_coverage."
-        exit 1
-    fi
-done
-
+echo "Completed coverage test "

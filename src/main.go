@@ -41,6 +41,7 @@ func CtxErrorUnknown(ctx *gin.Context) {
 }
 
 func main() {
+	// notest
 	id, _ := gonanoid.New()
 	log := logger.New(os.Stdout, "main", id)
 

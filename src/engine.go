@@ -29,6 +29,7 @@ func HandlerImageUpload(ctx *gin.Context) {
 
 	file, err := form_file.Open()
 	if err != nil {
+		// notest
 		log.Error(err.Error())
 		CtxErrorUnknown(ctx)
 		return
@@ -37,6 +38,7 @@ func HandlerImageUpload(ctx *gin.Context) {
 
 	bytes, err := ioutil.ReadAll(file)
 	if err != nil {
+		// notest
 		log.Error(err.Error())
 		CtxErrorUnknown(ctx)
 		return
