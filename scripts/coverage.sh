@@ -10,7 +10,7 @@ lcov_file=lcov.info
 
 echo "Running courtney on all modules"
 
-../scripts/courtney -e ./...
+courtney -e ./...
 
 echo "Creating '$lcov_file' from '$cov_out'"
 
