@@ -1,1 +1,0 @@
-cd .. && cd courtney && go build . && cd .. && cd go-image-service && cd src && ../../courtney/courtney.exe
