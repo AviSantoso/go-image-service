@@ -1,17 +1,16 @@
-import { Component, createSignal } from 'solid-js';
+import { Component } from "solid-js";
 
-const App: Component = () => {
-  const [count, setCount] = createSignal(0);
+import { DisplayCount } from "./components/DisplayCount";
+import { Login } from "./components/Login";
+import { AuthProvider } from "./providers/AuthContext";
 
+export const App: Component = () => {
   return (
-    <button
-      onClick={() => {
-        setCount(count() + 1);
-      }}
-    >
-      {count()}
-    </button>
+    <div>
+      <AuthProvider>
+        <Login />
+        <DisplayCount />
+      </AuthProvider>
+    </div>
   );
 };
-
-export default App;
