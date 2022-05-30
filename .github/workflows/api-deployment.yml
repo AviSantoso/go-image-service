@@ -1,4 +1,4 @@
-name: Deployment
+name: API Deployment
 
 on:
   push:
@@ -30,8 +30,11 @@ jobs:
       - name: Login to the Digital Ocean registry
         run: doctl registry login
 
+      - name: Login to the Digital Ocean registry
+        run: doctl registry login
+
       - name: Build the Docker image
-        run: docker build . --file Dockerfile --tag ${{env.IMAGE_NAME}}:latest
+        run: cd api && pwd && docker build . --file Dockerfile --tag ${{env.IMAGE_NAME}}:latest
 
       - name: Tag the Docker image for the repository
         run: docker tag ${{env.IMAGE_NAME}}:latest ${{env.REGISTRY_URI}}/${{env.IMAGE_NAME}}:latest

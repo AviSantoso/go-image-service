@@ -1,4 +1,4 @@
-name: Integration
+name: API Integration
 
 on:
   push:
@@ -24,13 +24,13 @@ jobs:
           go-version: 1.18
 
       - name: Requirements
-        run: ./scripts/requirements.sh
+        run: ./api/scripts/requirements.sh
 
       - name: Build
-        run: cd src && pwd && go build .
+        run: cd ./api/src && pwd && go build .
 
       - name: Test
-        run: cd src && pwd && go test .
+        run: cd ./api/src && pwd && go test .
 
       - name: Coverage
-        run: ./scripts/coverage.sh
+        run: ./api/scripts/coverage.sh
