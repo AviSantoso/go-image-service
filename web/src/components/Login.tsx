@@ -1,19 +1,19 @@
 import { signInWithGoogle } from "../firebase";
-import { useAuth } from "../providers/AuthContext";
+import { auth } from "../providers/AuthContext";
 
-export const Login = () => {
-  const { email } = useAuth();
+export function Login() {
+  const [email] = auth;
 
   return (
     <div style={{ display: "flex", "flex-direction": "column" }}>
-      {email.length
-        ? `Currently logged in as ${email}.`
+      {email().length
+        ? `Currently logged in as ${email()}.`
         : `Please login before continuing.`}
-      {!email.length && (
+      {!email().length && (
         <button style={{ "max-width": "5em" }} onClick={signInWithGoogle}>
           Login
         </button>
       )}
     </div>
   );
-};
+}
