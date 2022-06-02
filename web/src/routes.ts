@@ -16,7 +16,7 @@ export const routes: RouteDefinition[] = [
     data: AboutData,
   },
   {
-    path: "/protected",
+    path: "/dashboard",
     component: lazy(() => import("./pages/ProtectedAbout")),
   },
   {
@@ -24,3 +24,5 @@ export const routes: RouteDefinition[] = [
     component: lazy(() => import("./errors/404")),
   },
 ];
+
+export default routes;

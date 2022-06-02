@@ -7,6 +7,7 @@ const [loading, setLoading] = createSignal(true);
 const [error, setError] = createSignal("");
 const [email, setEmail] = createSignal("");
 const [token, setToken] = createSignal("");
+const [loggedIn, setLoggedIn] = createSignal(false);
 
 createEffect(() => {
   try {
@@ -34,6 +35,10 @@ createEffect(() => {
   }
 });
 
+createEffect(() => {
+  setLoggedIn(() => Boolean(email() && token()));
+});
+
 export function useAuth() {
-  return { loading, error, email, token };
+  return { loading, error, loggedIn, email, token };
 }
