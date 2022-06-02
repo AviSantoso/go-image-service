@@ -1,4 +1,4 @@
-/* @refresh reload */
+import "./assets/index.css";
 import "windi.css";
 
 import { Router } from "solid-app-router";

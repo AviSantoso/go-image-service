@@ -4,6 +4,7 @@ import { useAuth } from "./hooks/useAuth";
 import { routes } from "./routes";
 
 import type { Component } from "solid-js";
+import { NavBar } from "./components/NavBar";
 export const App: Component = () => {
   const { email } = useAuth();
   const location = useLocation();
@@ -11,7 +12,8 @@ export const App: Component = () => {
 
   return (
     <>
-      <nav class="bg-gray-200 text-gray-900 px-4">
+      <NavBar />
+      {/* <nav class="bg-gray-200 text-gray-900 px-4">
         <ul class="flex items-center">
           <li class="py-2 px-4">
             <Link href="/" class="no-underline hover:underline">
@@ -51,7 +53,7 @@ export const App: Component = () => {
             />
           </li>
         </ul>
-      </nav>
+      </nav> */}
 
       <main>
         <Route />
