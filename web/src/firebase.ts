@@ -1,9 +1,6 @@
 import { getAnalytics } from "firebase/analytics";
 import { initializeApp } from "firebase/app";
 import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
-import { createContext } from "solid-js";
-
-export const FirebaseContext = createContext();
 
 const firebaseConfig = {
   apiKey: "AIzaSyDVqrgaox7bYmd54LRi-Kas1Wh4FA0-i5E",
