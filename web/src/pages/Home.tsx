@@ -1,30 +1,42 @@
-import { createSignal } from "solid-js";
+import purify from "dompurify";
+import { marked } from "marked";
+import { nanoid } from "nanoid";
+import { onMount } from "solid-js";
 
-export default function Home() {
-  const [count, setCount] = createSignal(0);
+import { BasePage } from "../components/BasePage";
+
+const contentId = `content-home-${nanoid()}`;
+
+export const Home = () => {
+  onMount(async () => {
+    const content = await (await fetch("/content/home.md")).text();
+    const md = purify.sanitize(marked.parse(content));
+    const inner = document.getElementById(contentId);
+
+    inner.innerHTML = md;
+
+    inner
+      .querySelectorAll("a")
+      .forEach((item) => item.classList.add("text-blue-700"));
+
+    inner.querySelectorAll("h1").forEach((item) => {
+      item.classList.add("py-2");
+      item.classList.add("text-4xl");
+      item.classList.add("font-400");
+    });
+
+    inner.querySelectorAll("h2").forEach((item) => {
+      item.classList.add("py-1");
+      item.classList.add("text-2xl");
+      item.classList.add("font-400");
+    });
+  });
 
   return (
-    <section class="text-gray-700 p-8">
-      <h1 class="text-2xl font-bold">Home</h1>
-      <p class="mt-4">This is the home page.</p>
-
-      <div class="flex items-center space-x-2">
-        <button
-          class="border rounded-lg px-2 border-gray-900"
-          onClick={() => setCount(count() - 1)}
-        >
-          -
-        </button>
-
-        <output class="p-10px">Count: {count}</output>
-
-        <button
-          class="border rounded-lg px-2 border-gray-900"
-          onClick={() => setCount(count() + 1)}
-        >
-          +
-        </button>
-      </div>
-    </section>
+    <BasePage>
+      <div class="flex flex-col gap-y-2" id={contentId} />
+    </BasePage>
   );
-}
+};
+
+export default Home;

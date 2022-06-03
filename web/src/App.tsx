@@ -11,7 +11,7 @@ export const App: Component = () => {
   return (
     <>
       <NavBar />
-      <main>
+      <main class="mt-6em">
         <Route />
       </main>
     </>
