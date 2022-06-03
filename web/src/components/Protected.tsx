@@ -1,7 +1,9 @@
 import { Component, JSX, Show } from "solid-js";
 
 import { useAuth } from "../hooks/useAuth";
+import { BaseContent } from "./BaseContent";
 import { BasePage } from "./BasePage";
+import { Title } from "./Title";
 
 interface ProtectedPageProps {
   children: JSX.Element;
@@ -12,14 +14,14 @@ export const ProtectedPage: Component<ProtectedPageProps> = (props) => {
 
   return (
     <BasePage>
-      <Show when={!loading()} fallback={<div>Loading...</div>}>
+      <Show when={!loading()} fallback={<BaseContent>Loading...</BaseContent>}>
         <Show
           when={email()}
           fallback={
-            <>
-              <h1 class="text-2xl font-bold">Unauthorized</h1>
-              <p class="mt-4">Please login before accessing this website.</p>
-            </>
+            <BaseContent>
+              <Title>Protected Page</Title>
+              <p>Please login before accessing this page.</p>
+            </BaseContent>
           }
         >
           {props.children}

@@ -1,16 +1,18 @@
 import { Component } from "solid-js";
 
+import { BaseContent } from "../components/BaseContent";
 import { ProtectedPage } from "../components/Protected";
+import { Title } from "../components/Title";
 import { useAuth } from "../hooks/useAuth";
 
 export const Dashboard: Component = () => {
   const { email } = useAuth();
   return (
     <ProtectedPage>
-      <div class="flex flex-col gap-y-2">
-        <h1 class="text-2xl font-bold">Dashboard</h1>
+      <BaseContent>
+        <Title>Dashboard</Title>
         <p>You're currently logged in as {email()}.</p>
-      </div>
+      </BaseContent>
     </ProtectedPage>
   );
 };

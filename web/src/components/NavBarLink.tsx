@@ -12,12 +12,12 @@ export const NavBarLink: Component<NavBarLinkProps> = (props) => {
     <Show
       when={props.active}
       fallback={
-        <Link href={props.href} style={{ color: "#f7ddc7" }}>
+        <Link href={props.href} style={{ color: "#fff8f2" }}>
           {props.title}
         </Link>
       }
     >
-      <Link href={props.href} style={{ color: "#fdd883" }}>
+      <Link href={props.href} style={{ color: "#f7ddc7" }}>
         {props.title}
       </Link>
     </Show>

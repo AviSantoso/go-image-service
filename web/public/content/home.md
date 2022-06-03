@@ -6,7 +6,7 @@ Built by [Aviciena Santoso](https://github.com/AviSantoso)
 
 ## Welcome
 
-<b>Go Image Service</b> allows you to store 📦 and manage your images and Albums in the Cloud ☁.
+<b>Go Image Service</b> allows you to store 📦 and manage your images and albums in the Cloud ☁.
 
 Get started by [logging in](/login) through the navigation bar using your Google account.
 
