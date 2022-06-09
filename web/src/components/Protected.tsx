@@ -7,13 +7,14 @@ import { Title } from "./Title";
 
 interface ProtectedPageProps {
   children: JSX.Element;
+  fullWidth?: boolean;
 }
 
 export const ProtectedPage: Component<ProtectedPageProps> = (props) => {
   const { loading, email } = useAuth();
 
   return (
-    <BasePage>
+    <BasePage fullWidth={props.fullWidth}>
       <Show when={!loading()} fallback={<BaseContent>Loading...</BaseContent>}>
         <Show
           when={email()}

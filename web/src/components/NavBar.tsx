@@ -8,9 +8,9 @@ import { NavBarLink } from "./NavBarLink";
 export const NavBar: Component = () => {
   const { loggedIn } = useAuth();
   const location = useLocation();
-
+  const hex = "#fafafa";
   return (
-    <nav class="bg-hex-f64970 px-8 fixed left-0 right-0 top-0 h-5em">
+    <nav class="bg-hex-284D79 px-8 fixed left-0 right-0 top-0 h-5em">
       <div class="container mx-auto max-w-1024px flex flex-wrap justify-between items-center p-4">
         <div class="flex flex-row w-3/10 space-x-8 items-center justify-start text-sm md:text-md font-bold w-auto">
           <NavBarLink
